@@ -38,6 +38,6 @@ echo "📊 Statut des services:"
 docker-compose ps
 
 echo "✅ Déploiement terminé!"
-echo "🌐 Frontend: http://localhost:3000"
-echo "🔧 Backend API: http://localhost:5000"
+echo "🌐 Frontend: ${FRONTEND_URL:-http://localhost:3000}"
+echo "🔧 Backend API: ${BACKEND_URL:-http://localhost:5000}"
 echo "🗄️  Base de données PostgreSQL: localhost:5432" 

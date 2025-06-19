@@ -4,9 +4,7 @@ const cors = require('cors');
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
-const aiRoutes = require('./routes/ai');
 const exportRoutes = require('./routes/export');
-const notifyRoutes = require('./routes/notify');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,9 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/ai', aiRoutes);
 app.use('/api/export', exportRoutes);
-app.use('/api/notify', notifyRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

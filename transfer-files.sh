@@ -4,9 +4,16 @@
 echo "📤 Transfert des fichiers vers AlmaLinux 9 VPS..."
 
 # Variables à configurer
-VPS_IP="votre-ip-vps"
-VPS_USER="root"
-VPS_PATH="/opt/opticours"
+VPS_IP="${VPS_IP:-votre-ip-vps}"
+VPS_USER="${VPS_USER:-root}"
+VPS_PATH="${VPS_PATH:-/opt/opticours}"
+
+# Vérifier que l'IP est configurée
+if [ "$VPS_IP" = "votre-ip-vps" ]; then
+    echo "❌ Veuillez configurer la variable VPS_IP"
+    echo "   Exemple: VPS_IP=185.170.212.245 ./transfer-files.sh"
+    exit 1
+fi
 
 # Vérifier la connexion SSH
 echo "🔍 Test de connexion SSH..."
@@ -19,14 +26,9 @@ fi
 echo "📁 Création du dossier sur le VPS..."
 ssh $VPS_USER@$VPS_IP "mkdir -p $VPS_PATH"
 
-# Transférer les fichiers
-echo "📤 Transfert des fichiers..."
-scp -r backend/ $VPS_USER@$VPS_IP:$VPS_PATH/
-scp -r frontend/ $VPS_USER@$VPS_IP:$VPS_PATH/
-scp docker-compose.yml $VPS_USER@$VPS_IP:$VPS_PATH/
-scp deploy.sh $VPS_USER@$VPS_IP:$VPS_PATH/
-scp install-almalinux9.sh $VPS_USER@$VPS_IP:$VPS_PATH/
-scp ALMALINUX9-DEPLOYMENT.md $VPS_USER@$VPS_IP:$VPS_PATH/
+# Cloner directement depuis GitHub
+echo "📥 Clonage depuis GitHub..."
+ssh $VPS_USER@$VPS_IP "cd $VPS_PATH && git clone https://github.com/noelchristi/OptiCours.git ."
 
 # Créer les dossiers nécessaires
 echo "📂 Création des dossiers nécessaires..."

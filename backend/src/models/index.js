@@ -3,11 +3,7 @@ const User = require('./User')(sequelize);
 const Course = require('./Course')(sequelize);
 
 // Définir les associations
-Object.keys(sequelize.models).forEach(modelName => {
-  if (sequelize.models[modelName].associate) {
-    sequelize.models[modelName].associate(sequelize.models);
-  }
-});
+Course.associate({ User });
 
 module.exports = {
   sequelize,

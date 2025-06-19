@@ -8,7 +8,7 @@
 2. **Exécutez le script d'installation** :
 ```bash
 # Télécharger le script
-wget https://raw.githubusercontent.com/votre-repo/saas_uni/main/install-almalinux9.sh
+wget https://raw.githubusercontent.com/noelchristi/OptiCours/main/install-almalinux9.sh
 
 # Rendre exécutable
 chmod +x install-almalinux9.sh
@@ -21,7 +21,7 @@ chmod +x install-almalinux9.sh
 
 ```bash
 # Connexion SSH
-ssh root@votre-serveur
+ssh root@votre-ip-vps
 
 # Mise à jour
 dnf update -y
@@ -35,7 +35,7 @@ systemctl start docker
 systemctl enable docker
 
 # Ajouter utilisateur au groupe docker
-usermod -aG docker votre-utilisateur
+usermod -aG docker $USER
 
 # Installation Docker Compose
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -51,34 +51,17 @@ firewall-cmd --reload
 
 ## 📁 Préparation du projet
 
-### 1. Créer le dossier du projet
+### 1. Cloner depuis GitHub
 ```bash
 mkdir -p /opt/opticours
 cd /opt/opticours
+git clone https://github.com/noelchristi/OptiCours.git .
 ```
 
-### 2. Télécharger les fichiers du projet
-
-**Option A: Via Webmin File Manager**
-1. Allez dans **Files** → **File Manager**
-2. Naviguez vers `/opt/opticours`
-3. Créez les fichiers suivants :
-
-**Option B: Via SSH/SCP**
+### 2. Configuration automatique
 ```bash
-# Depuis votre machine locale
-scp -r saas_uni/* root@votre-serveur:/opt/opticours/
-```
-
-## 🔧 Configuration
-
-### 1. Créer le fichier .env
-```bash
-nano /opt/opticours/backend/.env
-```
-
-Contenu :
-```env
+# Créer le fichier .env automatiquement
+cat > backend/.env << 'EOF'
 # Configuration du serveur
 PORT=5000
 NODE_ENV=production
@@ -88,21 +71,18 @@ DB_HOST=postgres
 DB_PORT=5432
 DB_NAME=opticours
 DB_USER=postgres
-DB_PASSWORD=votre_mot_de_passe_securise
+DB_PASSWORD=postgres
 
 # JWT
-JWT_SECRET=votre_secret_jwt_super_securise
+JWT_SECRET=opticours_production_secret_2024
 
 # URL du frontend
-FRONTEND_URL=http://votre-ip-ou-domaine:3000
-```
+FRONTEND_URL=http://votre-ip-vps:3000
+EOF
 
-### 2. Créer les dossiers nécessaires
-```bash
-mkdir -p /opt/opticours/backend/uploads
-mkdir -p /opt/opticours/backend/exports
-chmod 755 /opt/opticours/backend/uploads
-chmod 755 /opt/opticours/backend/exports
+# Créer les dossiers nécessaires
+mkdir -p backend/uploads backend/exports
+chmod 755 backend/uploads backend/exports
 ```
 
 ## 🚀 Déploiement
