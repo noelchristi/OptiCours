@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { api } from '../services/api';
+import api from '../services/api';
 import Layout from '../components/Layout';
 import toast from 'react-hot-toast';
 
